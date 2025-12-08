@@ -1,0 +1,34 @@
+# ================================
+# TofuApp 项目专用 .gitignore 文件
+# ================================
+
+# Python 字节码和缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller 构建输出
+build/
+dist/
+*.spec
+
+# 虚拟环境（强烈建议所有协作者都在独立的虚拟环境中工作）
+venv/
+.venv/
+env/
+ENV/
+
+# IDE 和编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 项目特定的可执行文件和打包文件
+TofuApp.exe
+*.exe
