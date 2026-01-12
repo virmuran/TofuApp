@@ -27,7 +27,7 @@ class HeatTransferMode(Enum):
 
 # ==================== 主界面类 ====================
 
-class HeatExchangerAreaCalculator(QWidget):
+class 换热器面积(QWidget):
     """换热器面积计算器 - 统一UI风格版"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1746,7 +1746,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = HeatExchangerAreaCalculator()
+    calculator = 换热器面积()
     calculator.resize(1200, 800)
     calculator.setWindowTitle("换热器面积计算器 v2.0")
     calculator.show()

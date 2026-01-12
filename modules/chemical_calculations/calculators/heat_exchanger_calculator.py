@@ -12,7 +12,7 @@ import re
 from datetime import datetime
 
 
-class HeatExchangerSimpleCalculator(QWidget):
+class 换热器计算(QWidget):
     """换热器计算器（统一UI风格版）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1677,7 +1677,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = HeatExchangerSimpleCalculator()
+    calculator = 换热器计算()
     calculator.resize(1200, 800)
     calculator.setWindowTitle("换热器计算器")
     calculator.show()

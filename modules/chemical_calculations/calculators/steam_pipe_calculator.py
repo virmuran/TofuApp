@@ -10,7 +10,7 @@ import re
 from datetime import datetime
 
 
-class SteamPipeCalculator(QWidget):
+class 蒸汽管径流量(QWidget):
     """蒸汽管径和流量查询（左右布局优化版 - 统一UI风格）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1131,7 +1131,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = SteamPipeCalculator()
+    calculator = 蒸汽管径流量()
     calculator.resize(1200, 800)
     calculator.show()
     

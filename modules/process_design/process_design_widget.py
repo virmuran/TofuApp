@@ -1,7 +1,13 @@
 # TofuApp/modules/process_design/process_design_widget.py
+"""
+工艺设计主部件 - 集成到主程序
+"""
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel
 from PySide6.QtCore import Qt
 import traceback
+
+# 导入工艺设计管理器
+from .process_design_manager import global_process_design_manager
 
 # 尝试从 tabs 包导入各个标签页
 try:
@@ -26,12 +32,14 @@ except ImportError as e:
     HeatBalanceTab = None
     MassBalanceTab = None
 
+
 class ProcessDesignWidget(QWidget):
     """工艺设计模块主部件"""
     
     def __init__(self, parent=None, data_manager=None):
         super().__init__(parent)
-        self.data_manager = data_manager
+        # 使用全局工艺设计管理器
+        self.data_manager = global_process_design_manager
         self.setup_ui()
         print("✅ ProcessDesignWidget 初始化完成")
     
@@ -71,7 +79,7 @@ class ProcessDesignWidget(QWidget):
                 self.create_error_tab(tab_name, f"{class_name} 模块导入失败")
         
         print(f"📊 工艺设计模块标签页创建完成，共 {self.tab_widget.count()} 个标签页")
-
+    
     def create_single_tab(self, display_name, TabClass, class_name):
         """通用方法创建单个标签页"""
         import inspect
@@ -126,16 +134,17 @@ class ProcessDesignWidget(QWidget):
                     success = False
         return success
     
-    def refresh_data(self):
+    def refresh(self):
         """刷新数据（保持接口兼容）"""
         for i in range(self.tab_widget.count()):
             widget = self.tab_widget.widget(i)
-            if hasattr(widget, 'refresh_data'):
+            if hasattr(widget, 'refresh'):
                 try:
-                    widget.refresh_data()
+                    widget.refresh()
                 except Exception as e:
                     print(f"❌ 刷新标签页{i}数据失败: {e}")
     
-    # 添加 refresh 方法以兼容主程序的 refresh_all_modules 调用
-    def refresh(self):
-        self.refresh_data()
+    def on_activate(self):
+        """模块激活时调用（保持接口兼容）"""
+        # 可以在这里添加模块激活时的逻辑
+        pass

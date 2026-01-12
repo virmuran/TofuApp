@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 
-class BasketFilterDesignCalculator(QWidget):
+class 篮式过滤器(QWidget):
     """篮式过滤器设计与压降计算器"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1302,7 +1302,7 @@ if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
     
     app = QApplication(sys.argv)
-    calculator = BasketFilterDesignCalculator()
+    calculator = 篮式过滤器()
     calculator.resize(1200, 800)
     calculator.show()
     sys.exit(app.exec())

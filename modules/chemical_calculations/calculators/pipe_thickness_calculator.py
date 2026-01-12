@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 
-class PipeThicknessCalculator(QWidget):
+class 管道壁厚(QWidget):
     """管道壁厚计算器（左右布局优化版）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1252,7 +1252,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    widget = PipeThicknessCalculator()
+    widget = 管道壁厚()
     widget.resize(1200, 800)
     widget.show()
     

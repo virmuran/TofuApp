@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont, QDoubleValidator
 import math
 
-class FireHydrantCalculator(QWidget):
+class 消火栓计算(QWidget):
     """消火栓计算器"""
     
     def __init__(self, parent=None):
@@ -650,7 +650,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    widget = FireHydrantCalculator()
+    widget = 消火栓计算()
     widget.resize(900, 700)
     widget.show()
     

@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton,
     QGroupBox, QTextEdit, QComboBox, QMessageBox, QFrame,
     QScrollArea, QDialog, QSpinBox, QButtonGroup, QGridLayout,
-    QFileDialog, QDialogButtonBox
+    QFileDialog, QDialogButtonBox, QSizePolicy
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont, QDoubleValidator
@@ -112,7 +112,7 @@ class FittingsDialog(QDialog):
         return total
 
 
-class PressureDropCalculator(QWidget):
+class 压降计算(QWidget):
     """管道压降计算（左右布局优化版）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -144,9 +144,8 @@ class PressureDropCalculator(QWidget):
         main_layout.setSpacing(15)
         main_layout.setContentsMargins(10, 10, 10, 10)
         
-        # 左侧：输入参数区域 (占2/3宽度)
+        # 左侧：输入参数区域 - 使用动态宽度
         left_widget = QWidget()
-        left_widget.setMaximumWidth(900)  # 限制最大宽度
         left_layout = QVBoxLayout(left_widget)
         left_layout.setSpacing(15)
         
@@ -189,7 +188,8 @@ class PressureDropCalculator(QWidget):
             btn = QPushButton(mode_name)
             btn.setCheckable(True)
             btn.setToolTip(tooltip)
-            btn.setFixedWidth(180)  # 固定宽度
+            btn.setMinimumWidth(120)  # 设置最小宽度而不是固定宽度
+            btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展，垂直固定
             btn.setStyleSheet("""
                 QPushButton {
                     background-color: #ecf0f1;
@@ -241,6 +241,11 @@ class PressureDropCalculator(QWidget):
         input_layout.setVerticalSpacing(12)
         input_layout.setHorizontalSpacing(10)
         
+        # 设置列宽比例
+        input_layout.setColumnStretch(0, 1)  # 标签列
+        input_layout.setColumnStretch(1, 2)  # 输入框列
+        input_layout.setColumnStretch(2, 2)  # 下拉菜单列
+        
         # 标签样式 - 右对齐
         label_style = """
             QLabel {
@@ -248,14 +253,6 @@ class PressureDropCalculator(QWidget):
                 padding-right: 10px;
             }
         """
-        
-        # 输入框和下拉菜单的固定宽度
-        input_width = 400
-        combo_width = 250
-        
-        # 第一列：参数名称（右对齐）
-        # 第二列：输入框（固定宽度）
-        # 第三列：下拉菜单（固定宽度）
         
         row = 0
         
@@ -268,12 +265,12 @@ class PressureDropCalculator(QWidget):
         self.roughness_input = QLineEdit()
         self.roughness_input.setPlaceholderText("输入粗糙度值")
         self.roughness_input.setValidator(QDoubleValidator(0.001, 10.0, 6))
-        self.roughness_input.setFixedWidth(input_width)
+        self.roughness_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.roughness_input, row, 1)
         
         self.roughness_combo = QComboBox()
         self.setup_roughness_options()
-        self.roughness_combo.setFixedWidth(combo_width)
+        self.roughness_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         self.roughness_combo.currentTextChanged.connect(self.on_roughness_changed)
         input_layout.addWidget(self.roughness_combo, row, 2)
         
@@ -288,12 +285,12 @@ class PressureDropCalculator(QWidget):
         self.diameter_input = QLineEdit()
         self.diameter_input.setPlaceholderText("输入内径值")
         self.diameter_input.setValidator(QDoubleValidator(1.0, 2000.0, 6))
-        self.diameter_input.setFixedWidth(input_width)
+        self.diameter_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.diameter_input, row, 1)
         
         self.diameter_combo = QComboBox()
         self.setup_diameter_options()
-        self.diameter_combo.setFixedWidth(combo_width)
+        self.diameter_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         self.diameter_combo.currentTextChanged.connect(self.on_diameter_changed)
         input_layout.addWidget(self.diameter_combo, row, 2)
         
@@ -308,13 +305,13 @@ class PressureDropCalculator(QWidget):
         self.length_input = QLineEdit()
         self.length_input.setPlaceholderText("例如: 300")
         self.length_input.setValidator(QDoubleValidator(0.1, 10000.0, 6))
-        self.length_input.setFixedWidth(input_width)
+        self.length_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.length_input, row, 1)
         
         # 长度输入不需要下拉菜单，替换为提示标签
         self.length_hint = QLabel("直接输入长度值")
         self.length_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.length_hint.setFixedWidth(combo_width)
+        self.length_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.length_hint, row, 2)
         
         row += 1
@@ -328,13 +325,13 @@ class PressureDropCalculator(QWidget):
         self.flow_input = QLineEdit()
         self.flow_input.setPlaceholderText("例如: 5172")
         self.flow_input.setValidator(QDoubleValidator(0.1, 1000000.0, 6))
-        self.flow_input.setFixedWidth(input_width)
+        self.flow_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.flow_input, row, 1)
         
         # 流量输入不需要下拉菜单，替换为提示标签
         self.flow_hint = QLabel("直接输入流量值")
         self.flow_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.flow_hint.setFixedWidth(combo_width)
+        self.flow_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.flow_hint, row, 2)
         
         row += 1
@@ -347,13 +344,13 @@ class PressureDropCalculator(QWidget):
         
         self.fluid_input = QLineEdit()
         self.fluid_input.setPlaceholderText("自动填充")
-        self.fluid_input.setReadOnly(True)  # 只读，通过下拉菜单选择
-        self.fluid_input.setFixedWidth(input_width)
+        self.fluid_input.setReadOnly(True)
+        self.fluid_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.fluid_input, row, 1)
         
         self.fluid_combo = QComboBox()
         self.setup_fluid_options()
-        self.fluid_combo.setFixedWidth(combo_width)
+        self.fluid_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         self.fluid_combo.currentTextChanged.connect(self.on_fluid_changed)
         input_layout.addWidget(self.fluid_combo, row, 2)
         
@@ -368,13 +365,13 @@ class PressureDropCalculator(QWidget):
         self.density_input = QLineEdit()
         self.density_input.setPlaceholderText("自动填充")
         self.density_input.setReadOnly(True)
-        self.density_input.setFixedWidth(input_width)
+        self.density_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.density_input, row, 1)
         
         # 密度不需要下拉，替换为提示标签
         self.density_hint = QLabel("根据流体自动计算")
         self.density_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.density_hint.setFixedWidth(combo_width)
+        self.density_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.density_hint, row, 2)
         
         row += 1
@@ -388,13 +385,13 @@ class PressureDropCalculator(QWidget):
         self.viscosity_input = QLineEdit()
         self.viscosity_input.setPlaceholderText("自动填充")
         self.viscosity_input.setReadOnly(True)
-        self.viscosity_input.setFixedWidth(input_width)
+        self.viscosity_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.viscosity_input, row, 1)
         
         # 粘度不需要下拉，替换为提示标签
         self.viscosity_hint = QLabel("根据流体自动计算")
         self.viscosity_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.viscosity_hint.setFixedWidth(combo_width)
+        self.viscosity_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.viscosity_hint, row, 2)
         
         row += 1
@@ -409,13 +406,13 @@ class PressureDropCalculator(QWidget):
         self.elevation_input.setPlaceholderText("例如: 0")
         self.elevation_input.setValidator(QDoubleValidator(-1000.0, 1000.0, 6))
         self.elevation_input.setText("0")
-        self.elevation_input.setFixedWidth(input_width)
+        self.elevation_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.elevation_input, row, 1)
         
         # 标高变化不需要下拉，替换为提示标签
         self.elevation_hint = QLabel("正值为上升，负值为下降")
         self.elevation_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.elevation_hint.setFixedWidth(combo_width)
+        self.elevation_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.elevation_hint, row, 2)
         
         row += 1
@@ -429,7 +426,7 @@ class PressureDropCalculator(QWidget):
         self.adiabatic_input = QLineEdit()
         self.adiabatic_input.setPlaceholderText("自动填充")
         self.adiabatic_input.setReadOnly(True)
-        self.adiabatic_input.setFixedWidth(input_width)
+        self.adiabatic_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.adiabatic_input, row, 1)
         
         self.adiabatic_combo = QComboBox()
@@ -440,7 +437,7 @@ class PressureDropCalculator(QWidget):
             "1.30 - 三原子气体",
             "自定义绝热系数"
         ])
-        self.adiabatic_combo.setFixedWidth(combo_width)
+        self.adiabatic_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         self.adiabatic_combo.currentTextChanged.connect(self.on_adiabatic_changed)
         input_layout.addWidget(self.adiabatic_combo, row, 2)
         
@@ -455,13 +452,13 @@ class PressureDropCalculator(QWidget):
         self.pressure_input = QLineEdit()
         self.pressure_input.setPlaceholderText("例如: 101.3")
         self.pressure_input.setValidator(QDoubleValidator(0.1, 10000.0, 6))
-        self.pressure_input.setFixedWidth(input_width)
+        self.pressure_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         input_layout.addWidget(self.pressure_input, row, 1)
         
         # 压力不需要下拉，替换为提示标签
         self.pressure_hint = QLabel("标准大气压: 101.3 kPa")
         self.pressure_hint.setStyleSheet("color: #7f8c8d; font-style: italic;")
-        self.pressure_hint.setFixedWidth(combo_width)
+        self.pressure_hint.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         input_layout.addWidget(self.pressure_hint, row, 2)
         
         left_layout.addWidget(input_group)
@@ -470,6 +467,7 @@ class PressureDropCalculator(QWidget):
         self.fittings_btn = QPushButton("🔧 选择管件和阀门")
         self.fittings_btn.setFont(QFont("Arial", 10))
         self.fittings_btn.clicked.connect(self.select_fittings)
+        self.fittings_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         self.fittings_btn.setStyleSheet("""
             QPushButton {
                 background-color: #95a5a6;
@@ -489,6 +487,7 @@ class PressureDropCalculator(QWidget):
         calculate_btn = QPushButton("🧮 计算压降")
         calculate_btn.setFont(QFont("Arial", 12, QFont.Bold))
         calculate_btn.clicked.connect(self.calculate_pressure_drop)
+        calculate_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         calculate_btn.setStyleSheet("""
             QPushButton {
                 background-color: #27ae60;
@@ -509,6 +508,7 @@ class PressureDropCalculator(QWidget):
         download_layout = QHBoxLayout()
         download_txt_btn = QPushButton("📄 下载计算书(TXT)")
         download_txt_btn.clicked.connect(self.download_txt_report)
+        download_txt_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         download_txt_btn.setStyleSheet("""
             QPushButton {
                 background-color: #27ae60;
@@ -525,6 +525,7 @@ class PressureDropCalculator(QWidget):
 
         download_pdf_btn = QPushButton("📊 下载计算书(PDF)")
         download_pdf_btn.clicked.connect(self.generate_pdf_report)
+        download_pdf_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # 水平扩展
         download_pdf_btn.setStyleSheet("""
             QPushButton {
                 background-color: #e74c3c;
@@ -543,12 +544,12 @@ class PressureDropCalculator(QWidget):
         download_layout.addWidget(download_pdf_btn)
         left_layout.addLayout(download_layout)
         
-        # 7. 在底部添加拉伸因子，这样放大窗口时空白会出现在这里
+        # 7. 在底部添加拉伸因子
         left_layout.addStretch()
         
-        # 右侧：结果显示区域 (占1/3宽度)
+        # 右侧：结果显示区域 - 使用动态宽度
         right_widget = QWidget()
-        right_widget.setMinimumWidth(400)
+        right_widget.setMinimumWidth(300)  # 设置最小宽度而不是固定宽度
         right_layout = QVBoxLayout(right_widget)
         right_layout.setSpacing(15)
         
@@ -572,6 +573,7 @@ class PressureDropCalculator(QWidget):
         
         self.result_text = QTextEdit()
         self.result_text.setReadOnly(True)
+        self.result_text.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)  # 双向扩展
         self.result_text.setStyleSheet("""
             QTextEdit {
                 border: 1px solid #ecf0f1;
@@ -585,9 +587,9 @@ class PressureDropCalculator(QWidget):
         
         right_layout.addWidget(self.result_group)
         
-        # 将左右两部分添加到主布局
-        main_layout.addWidget(left_widget, 2)  # 左侧占2/3
-        main_layout.addWidget(right_widget, 1)  # 右侧占1/3
+        # 将左右两部分添加到主布局，设置拉伸因子
+        main_layout.addWidget(left_widget, 2)  # 左侧占2/3权重
+        main_layout.addWidget(right_widget, 1)  # 右侧占1/3权重
     
     def on_mode_button_clicked(self, button):
         """处理计算模式按钮点击"""
@@ -1575,7 +1577,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = PressureDropCalculator()
+    calculator = 压降计算()
     calculator.resize(1200, 800)
     calculator.show()
     

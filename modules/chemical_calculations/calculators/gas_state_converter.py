@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 
-class GasStateConverter(QWidget):
+class 气体标态转压缩态(QWidget):
     """气体标准状态转压缩状态（左右布局优化版）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -935,7 +935,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    converter = GasStateConverter()
+    converter = 气体标态转压缩态()
     converter.resize(1200, 800)
     converter.show()
     

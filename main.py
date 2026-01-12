@@ -85,6 +85,7 @@ class TofuApp(QMainWindow):
     def create_modules(self):
         """创建所有功能模块"""
         modules_config = [
+            # ("modules.process_design", "ProcessDesignWidget", "工艺设计", "⚙️"),
             ("modules.chemical_calculations", "ChemicalCalculationsWidget", "工程计算", "🔬"),
             ("modules.converter.converter_widget", "ConverterWidget", "换算器", "📐"),
             ("modules.pomodoro", "PomodoroTimer", "番茄时钟", "🍅"),

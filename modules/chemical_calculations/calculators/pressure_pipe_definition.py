@@ -7,7 +7,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont, QDoubleValidator
 import math
 
-class PressurePipeDefinition(QWidget):
+class 压力管道定义(QWidget):
     """压力管道定义计算器"""
     
     def __init__(self, parent=None):
@@ -368,7 +368,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    widget = PressurePipeDefinition()
+    widget = 压力管道定义()
     widget.resize(800, 600)
     widget.show()
     

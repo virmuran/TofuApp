@@ -14,7 +14,7 @@ from PySide6.QtGui import QFont, QDoubleValidator, QIntValidator
 import math
 
 
-class PipeSpacingCalculator(QWidget):
+class 管道间距(QWidget):
     """专业的管道间距计算器 - 依据化工部标准"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -671,7 +671,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = PipeSpacingCalculator()
+    calculator = 管道间距()
     calculator.setWindowTitle("管道间距计算器 - 专业版")
     calculator.resize(900, 700)
     calculator.show()

@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 
-class PipeCompensationCalculator(QWidget):
+class 管道补偿(QWidget):
     """管道补偿计算器（与压降计算器UI一致）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1529,7 +1529,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = PipeCompensationCalculator()
+    calculator = 管道补偿()
     calculator.resize(1200, 800)
     calculator.setWindowTitle("管道补偿计算器")
     calculator.show()

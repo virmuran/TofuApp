@@ -11,7 +11,7 @@ import re
 from datetime import datetime
 
 
-class PipeDiameterCalculator(QWidget):
+class 管径计算(QWidget):
     """管道直径计算器 - 基于表格数据（统一UI风格版）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1706,7 +1706,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = PipeDiameterCalculator()
+    calculator = 管径计算()
     calculator.resize(1200, 800)
     calculator.show()
     

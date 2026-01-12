@@ -99,7 +99,7 @@ class ProjectInfoDialog(QDialog):
         }
 
 
-class PipeSpanCalculator(QWidget):
+class 管道跨距(QWidget):
     """管道跨距计算（按照压降计算模块UI风格重新设计）"""
     
     def __init__(self, parent=None, data_manager=None):
@@ -1229,7 +1229,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     
-    calculator = PipeSpanCalculator()
+    calculator = 管道跨距()
     calculator.resize(1200, 800)
     calculator.show()
     
